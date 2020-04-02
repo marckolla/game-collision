@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="shortcut icon" href="img/macaco.png">
+    <meta charset="UTF-8">
+    <title>jogo colisão</title>
+    <style>
+        #dvprin{
+            width: 800px;
+            height: 600px;
+            background-color: #888;
+            position: absolute;
+            left: 250px;
+            top: 30px;
+            overflow: hidden;
+        }
+        #pvida{
+            position: absolute;
+            margin-top: 10px;
+            top: 0px;
+            left:250px;
+            font-size: 20px;
+        }
+        #dpersonagem{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: 350px;
+            top: 500px;
+            background-color: rgba(241, 235, 235, 0);
+            display: block;
+        }
+        .inimigo{
+            width: 60px;
+            height: 60px;
+            background-color: rgba(230, 238, 230, 0.007);
+            position: absolute;
+            top: 0px; 
+            background-image:url("img/pedra.png");
+            background-size: contain;
+            display: none;
+        }
+        #co{
+            position: absolute;
+            left: 315px;
+            top:13px;
+        }
+        #dprestart{
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            top: 250px;
+            background-color: rgba(14, 13, 13, 0.637);
+            color:#fff;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #verifica{
+            width: 250px;
+        }
+        #score{
+            position: absolute;
+            margin-top: -3px;
+            left:345px;
+            font-size: 17px;
+        }
+        #time{
+            position: absolute;
+            margin-top: -3px;
+            left:610px;
+            font-size: 17px;
+        }
+        #nivel{
+            position: absolute;
+            margin-top: -3px;
+            left:950px;
+            font-size: 17px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <p id="pvida">vidas: 9</p><img id="co" src="img/coracao.jpg" alt="coracao" width=17 height=17>
+    <p id="score">SCORE: 0</p>
+    <p id="time">Time 00:00</p>
+    <p id="nivel">nivel: Easy</p>
+
+    <div id="dvprin">
+        <img src="img/cenario.jpg" alt="cenario" width=800 height=600>
+        <div id="dpersonagem">
+            <img src="img/macaco.png" alt="macaco" width=100 height=100>
+        </div>
+
+        <div id="inimigo1" class="inimigo">
+        </div>
+        <div id="inimigo2" class="inimigo">
+        </div>
+        <div id="inimigo3" class="inimigo">
+        </div>
+        <div id="inimigo4" class="inimigo">
+        </div>
+        <div id="inimigo5" class="inimigo">
+        </div>
+        <div id="dprestart">APERTE ENTER  PARA COMEÇAR!</div>
+
+
+    </div>
+    <p id="verifica"></p>
+
+    <script>
+        var px = 350;
+        var py = 500;
+        var vel = 10;
+        var score = 0;
+        var min = 0;
+        var seg = "0"+0;
+        var nivel = "Easy";
+        var pnivel = document.getElementById("nivel");
+        var ptime = document.getElementById("time");
+        var pscore = document.getElementById("score");
+        var pveri = document.getElementById("verifica");
+        var presenter = document.getElementById("dprestart");
+        var vida = document.getElementById("pvida");
+        var dprin = document.getElementById("dvprin");
+        var per = document.getElementById("dpersonagem");
+        var ini1 = document.getElementById("inimigo1");
+        var ini2 = document.getElementById("inimigo2");
+        var ini3 = document.getElementById("inimigo3");
+        var ini4 = document.getElementById("inimigo4");
+        var ini5 = document.getElementById("inimigo5");
+        var ps1 = 0;
+        var ps2 = 0;
+        var ps3 = 0;
+        var ps4 = 0;
+        var ps5 = 0;
+        var vd  = 8;
+        var dif = 400;
+        var con = false;
+        var con1 = false;
+        var ale1 = 0;
+        var ale2 = 350;
+        var ale3 = 550;
+        var ale4 = 740;
+        var ale5 = 170;
+
+        var perw = 100;
+        var perh = 100;
+        var iniw = 60;
+        var inih = 60;
+
+        function vericolisao(){//inicio//verifica colisão com o personagem 
+            if((ale1 + inih) > px && ale1 < (px + perh) && ps1  > py && ps1 < (py + perw)){ 
+                ps1 = 0
+                ale1 = Math.round(Math.random() * 740)
+                verivida()  
+            }else
+            if((ale2 + inih) > px && ale2 < (px + perh) && ps2  > py && ps2 < (py + perw)){ 
+                ps2 = 0
+                ale2 = Math.round(Math.random() * 740)
+                verivida()  
+
+            }else
+            if((ale3 + inih) > px && ale3 < (px + perh) && ps3  > py && ps3 < (py + perw)){
+                ps3 = 0
+                ale3 = Math.round(Math.random() * 740)
+                verivida()  
+
+            }else
+            if((ale4 + inih) > px && ale4 < (px + perh) && ps4  > py && ps4 < (py + perw)){
+                ps4 = 0
+                ale4 = Math.round(Math.random() * 740)
+                verivida()  
+
+            }else
+            if((ale5 + inih) > px && ale5 < (px + perh) && ps5  > py && ps5 < (py + perw)){
+                ps5 = 0
+                ale5 = Math.round(Math.random() * 740) 
+                verivida()  
+
+            }
+            //fim//
+            
+             //inicio// colisão com o chão 
+            if(ps1 > 600){
+                ps1 = -20;
+                ini1.style.top=ps1+"px";
+                ale1 = Math.round(Math.random() * 740);
+                ini1.style.left=ale1+"px";
+                 
+            }else
+            if(ps2 > 600){
+                ps2 = -20;
+                ini2.style.top=ps2+"px";
+                ale2 = Math.round(Math.random() * 740); 
+                ini2.style.left=ale2+"px";
+            }else
+            if(ps3 > 600){
+                ps3 = -20;
+                ini3.style.top=ps3+"px";
+                ale3 = Math.round(Math.random() * 740); 
+                ini3.style.left=ale3+"px";
+            }else
+            if(ps4 > 600){
+                ps4 = -20;
+                ini4.style.top=ps4+"px";
+                ale4 = Math.round(Math.random() * 740); 
+                ini4.style.left=ale4+"px"
+            }else
+            if(ps5 > 600){
+                ps5 = -20;
+                ini5.style.top=ps5+"px";
+                ale5 = Math.round(Math.random() * 740); 
+                ini5.style.left=ale5+"px";  
+            }
+            //fim// colisão com o chão
+  
+        }
+        function verivida(){
+            if(vd <= 0){
+                vida.innerHTML="vidas: "+vd;
+                con = false;
+                con1 = true;
+                pscore.style.display="none";
+                clearInterval(setInterval(temposcore))
+                presenter.innerHTML="GAME OVER!<br>SCORE: "+score;
+                presenter.style.display="flex";
+                /*ini1.style.display="none";
+                ini2.style.display="none";
+                ini3.style.display="none";
+                ini4.style.display="none";
+                ini5.style.display="none";*/
+            }else{
+                vida.innerHTML="vidas: "+vd;
+                vd--
+            }
+                
+        }
+        function dificuldade(){
+            if(score == 200){
+                dif = 100;
+                nivel = "Medium"
+            }else
+            if(score == 400){
+                dif = 50;
+                nivel = "Hard"
+            }else
+            if(score == 800){
+               
+            }else
+            if(score == 1100){
+               
+            }
+            pnivel.innerHTML="nivel: "+nivel;
+        }
+        function temposcore(){
+            if(con){
+            score+=10;
+            pscore.innerHTML="SCORE: "+score;
+            }
+            
+            //time
+            if(con){
+            
+                seg++
+                if(seg > 59){
+                    seg ="0" + 0;
+                    min++;
+                }else
+                if(seg < 10){
+                    seg = "0" + seg;
+                }
+            }
+            ptime.innerHTML="Time 0"+min + ":" + seg;
+
+           
+        }
+
+        
+        setInterval(temposcore,1000);
+
+        /*function pverifica(){//posições atualizada dos objetos
+        pveri.innerHTML="eixo X do macaco: "+px+"<br>eixo Y do macaco: "+py+"<hr>eixo X da pedra 1: "+ ale1 +"<br> eixo Y da pedra 1: "+ 
+        ps1+"<hr>eixo X da pedra 2: "+ale2+"<br>eixo Y da pedra 2: "+ps2+"<hr>eixo X da pedra 3: "+ale3+"<br> eixo Y da pedra 3: "+ps3+
+        "<hr>eixo X da pedra 4: "+ale4+"<br> eixo Y da pedra 4: "+ps4+"<hr>eixo X da pedra 5: "+ale5+"<br> eixo Y da pedra 5: "+ps5;
+        }*/
+
+        function inicia(){
+            dificuldade()
+            
+            //movimenta os 'inimigos' p lado 
+            ini1.style.left=ale1+"px";
+            ini2.style.left=ale2+"px";
+            ini3.style.left=ale3+"px";
+            ini4.style.left=ale4+"px";
+            ini5.style.left=ale5+"px";
+            //movimenta os 'inimigos' para baixo!
+            ini1.style.top=ps1+"px";
+            ini2.style.top=ps2+"px";
+            ini3.style.top=ps3+"px";
+            ini4.style.top=ps4+"px";
+            ini5.style.top=ps5+"px";
+            //incrementa o eixo Y inimigo
+            ps1+=20;
+            ps2+= Math.round(Math.random() * 60);
+            if(ps2 < 40){
+                ps2+= Math.round(Math.random() * 60);
+            }
+            ps3+=20;
+            ps4+=30;
+            ps5+=30;
+            vericolisao()
+            if(con){
+                setTimeout(inicia,dif);
+            }else{
+                clearTimeout(setTimeout(inicia));
+            }
+            
+           
+           
+        // pverifica();
+
+        }
+        
+        function start(){
+            var enter = event.keyCode;
+            if(!con1){
+            if(enter == 13){
+                con = true;
+                setTimeout(inicia,1);
+                per.style.display="block";
+                presenter.style.display="none";
+                ini1.style.display="block";
+                ini2.style.display="block";
+                ini3.style.display="block";
+                ini4.style.display="block";
+                ini5.style.display="block";
+                
+                
+            }
+            }
+        }
+       
+        function mover(){
+            //movimentação do personagem (macaco)
+            var tecla = event.keyCode;
+            if(con){
+             switch(tecla){
+                case 37://movimenta para esquerda(eixo X)
+                if(px <= 0){//limita até onde personagem pode ir (lado esquerdo)
+                    px = 10;
+                }
+                    px -= vel;
+                    per.style.left=px+"px";                       
+                break;
+                case 38://movimenta para cima(eixo Y)
+                if(py <= 0){//limita até onde personagem pode ir (cima)
+                    py = 10;
+                }
+                    py -= vel;
+                    per.style.top=py+"px";                       
+                break;
+                case 39://movimenta para direita(eixo X)
+                if(px >= 700){//limita até onde personagem pode ir (lado direito)
+                    px = 690;
+                }
+                    px += vel;
+                    per.style.left=px+"px";                       
+                break;
+                case 40://movimenta para baixo(eixo Y)
+                    if(py >= 500){//limita até onde personagem pode ir (baixo)
+                        py = 490;
+                    }
+                    py += vel;
+                    per.style.top=py +"px";                       
+                break;
+  
+                }
+            }
+ 
+        }
+        window.addEventListener("keydown",start);
+     
+        window.addEventListener("keydown",mover);
+    </script>
+    
+</body>
+</html>
